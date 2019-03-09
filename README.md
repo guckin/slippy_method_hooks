@@ -33,12 +33,13 @@ The before hook will be called before the method call
 ```ruby
 class MyClass
   include SlippyMethodHooks
-  def a(args)
-    args
-  end
   
+  def a(args)
+    puts "#a called with args #{args}"
+  end
+
   def b(args)
-    args
+      puts "#b called with args #{args.join(', ')}"
   end
 
   before(:a, :b) do |name, args|
@@ -50,6 +51,7 @@ my_class = MyClass.new
 my_class.b('arg 1', 'arg 2')
 # b
 # ['arg 1', 'arg 2']
+# b called with args arg 1, arg 2
 ```
  
 
