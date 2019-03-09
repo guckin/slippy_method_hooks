@@ -19,7 +19,7 @@ RSpec.describe SlippyMethodHooks do
       start_time = Time.now
       begin
         klass.new.meth
-      rescue
+      rescue StandardError
         end_time = Time.now
       end
       result = end_time - start_time
@@ -94,6 +94,7 @@ RSpec.describe SlippyMethodHooks do
     end
 
     context 'with a block and the method does not expire' do
+
       before(:each) do
         test_class = Class.new do
           include SlippyMethodHooks
@@ -127,58 +128,121 @@ RSpec.describe SlippyMethodHooks do
       it 'returns the result of the method' do
         expect(@result).to eq(@test_obj.class.expected_result)
       end
+
     end
-    context 'when .rescue_on_fail is called' do
+  end
 
-      context 'when no block is provided' do
+  context 'when .rescue_on_fail is used' do
 
-        before(:each) do
-          @result =
-            begin
-              Class.new do
-                include SlippyMethodHooks
+    context 'when no block is provided' do
 
-                def meth; end
-
-                rescue_on_fail(:meth)
-              end
-            rescue SlippyMethodHooks::NoBlockGiven => e
-              e
-            end
-        end
-
-        it "raises #{SlippyMethodHooks::NoBlockGiven}" do
-          expect(@result).to be_a(SlippyMethodHooks::NoBlockGiven)
-        end
-      end
-
-      context 'when the method fails' do
-        blk = ->(err = nil) { { test_value: 'test', error: err } }
-
-        before(:each) do
-          @test_class =
+      before(:each) do
+        @result =
+          begin
             Class.new do
               include SlippyMethodHooks
 
-              def meth
-                raise StandardError, 'fart sound'
-              end
+              def meth; end
 
-              rescue_on_fail(:meth, &blk)
+              rescue_on_fail(:meth)
             end
-        end
+          rescue SlippyMethodHooks::NoBlockGiven => e
+            e
+          end
+      end
 
-        it 'returns the result of the block' do
-          result = @test_class.new.meth
-          expected = blk.call
-          expect(result[:test_value]).to eq(expected[:test_value])
-        end
+      it "raises #{SlippyMethodHooks::NoBlockGiven}" do
+        expect(@result).to be_a(SlippyMethodHooks::NoBlockGiven)
+      end
+    end
 
-        it 'yields an error object' do
-          result = @test_class.new.meth
-          expect(result[:error]).to be_a(StandardError)
+    context 'when the method fails' do
+      blk = ->(err = nil) { { test_value: 'test', error: err } }
+
+      before(:each) do
+        @test_class =
+          Class.new do
+            include SlippyMethodHooks
+
+            def meth
+              raise StandardError, 'fart sound'
+            end
+
+            rescue_on_fail(:meth, &blk)
+          end
+      end
+
+      it 'returns the result of the block' do
+        result = @test_class.new.meth
+        expected = blk.call
+        expect(result[:test_value]).to eq(expected[:test_value])
+      end
+
+      it 'yields an error object' do
+        result = @test_class.new.meth
+        expect(result[:error]).to be_a(StandardError)
+      end
+    end
+  end
+  context 'when .before is used' do
+
+    before :each do
+      @test_class = Class.new do
+        require 'rspec/expectations'
+        include SlippyMethodHooks
+        def meth(*_args, &_blk)
+          nil
         end
       end
     end
+
+    context 'without a block given' do
+      it 'raises an error' do
+        result =
+          begin
+            @test_class.instance_exec do
+              before(:meth)
+            end
+          rescue SlippyMethodHooks::NoBlockGiven => e
+            e
+          end
+        expect(result).to be_a(SlippyMethodHooks::NoBlockGiven)
+      end
+    end
+
+    context 'when given a block' do
+
+      it 'yields the methods arguments' do
+        test_data = { name: :meth,
+                      args: [1, 2],
+                      blk: -> { 'test' } }
+        @test_class.instance_exec(self) do |slf|
+          before(test_data[:name]) do |name, *args|
+            slf.expect(name).to slf.eq(test_data[:name])
+            slf.expect(args).to slf.eq([*test_data[:args], test_data[:blk]])
+          end
+        end
+        @test_class.new.meth(*test_data[:args], &test_data[:blk])
+      end
+    end
+
+    it 'the block is called before the method' do
+      value = nil
+      @test_class.instance_exec(self) do |slf|
+        define_method(:meth) do
+          value = 'in method'
+        end
+
+        before(:meth) do
+          value = 'in before'
+        end
+      end
+      @test_class.new.meth
+      expect(value).to eq('in method')
+    end
+
+  end
+  context 'when after is used' do
+
   end
 end

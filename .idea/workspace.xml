@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="73f66db3-41ba-4cf9-986c-73cfe2cfd1ed" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/slippy_method_hooks/hooks.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/slippy_method_hooks/hooks.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spec/slippy_method_hooks_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/spec/slippy_method_hooks_spec.rb" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,11 +27,9 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/spec/slippy_method_hooks_spec.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="458">
-              <caret line="210" column="41" selection-start-line="210" selection-start-column="41" selection-end-line="210" selection-end-column="41" />
+            <state relative-caret-position="592">
+              <caret line="240" column="36" selection-start-line="240" selection-start-column="36" selection-end-line="240" selection-end-column="36" />
               <folding>
-                <element signature="e#192#3020#0" />
-                <element signature="e#3062#4248#0" />
                 <element signature="e#4480#4790#0" />
               </folding>
             </state>
@@ -43,8 +39,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/slippy_method_hooks/hooks.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="588">
-              <caret line="65" column="26" selection-start-line="65" selection-start-column="14" selection-end-line="65" selection-end-column="26" />
+            <state relative-caret-position="-335">
+              <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
             </state>
           </provider>
         </entry>
@@ -254,7 +250,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1552071643572</updated>
-      <workItem from="1552071645019" duration="21084000" />
+      <workItem from="1552071645019" duration="22464000" />
     </task>
     <servers />
   </component>
@@ -264,7 +260,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21084000" />
+    <option name="totallyTimeSpent" value="22464000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="877" extended-state="0" />
@@ -388,13 +384,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/slippy_method_hooks/hooks.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="588">
-          <caret line="65" column="26" selection-start-line="65" selection-start-column="14" selection-end-line="65" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.rvm/gems/ruby-2.6.0/gems/rspec-expectations-3.8.2/lib/rspec/expectations/syntax.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="258">
@@ -402,13 +391,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/lib/slippy_method_hooks/hooks.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-335">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/spec/slippy_method_hooks_spec.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="458">
-          <caret line="210" column="41" selection-start-line="210" selection-start-column="41" selection-end-line="210" selection-end-column="41" />
+        <state relative-caret-position="592">
+          <caret line="240" column="36" selection-start-line="240" selection-start-column="36" selection-end-line="240" selection-end-column="36" />
           <folding>
-            <element signature="e#192#3020#0" />
-            <element signature="e#3062#4248#0" />
             <element signature="e#4480#4790#0" />
           </folding>
         </state>
