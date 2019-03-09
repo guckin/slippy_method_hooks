@@ -30,7 +30,7 @@ module SlippyMethodHooks
 
     def rescue_on_fail(*names, &blk)
       unless blk
-        raise TimeoutError,
+        raise NoBlockGiven,
               '.rescue_on_fail must be called with a block',
               caller
       end
