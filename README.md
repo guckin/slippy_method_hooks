@@ -1,8 +1,14 @@
 # SlippyMethodHooks
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/slippy_method_hooks`. To experiment with that code, run `bin/console` for an interactive prompt.
+Available Hooks 
 
-TODO: Delete this and the text above, and describe your gem
+`.before` - before a method execute callback 
+
+`.after` - after a method execute callback
+
+`.rescue_on_fail` - if failure then rescue then call callback
+
+`.time_box_method` - time box and call callback
 
 ## Installation
 
@@ -22,8 +28,36 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+##  `.before`
+The before hook will be called before the method call
+```ruby
+class MyClass
+  include SlippyMethodHooks
+  def a(args)
+    args
+  end
+  
+  def b(args)
+    args
+  end
 
+  before(:a, :b) do |name, args|
+    puts name # this is the name of the method
+    puts args # yields the args 
+  end
+end
+my_class = MyClass.new
+my_class.b('arg 1', 'arg 2')
+# b
+# ['arg 1', 'arg 2']
+```
+ 
+
+`.after` - after a method execute callback
+
+`.rescue_on_fail` - if failure then rescue then call callback
+
+`.time_box_method` - time box and call callback
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
