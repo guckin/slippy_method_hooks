@@ -5,75 +5,72 @@ RSpec.describe SlippyMethodHooks do
     expect(SlippyMethodHooks::VERSION).not_to be nil
   end
 
-  context 'method hooks' do
+  context 'when .time_box_method is called' do
 
-    context 'when .time_box_method is called' do
+    context 'without a block and the method call expires' do
 
-      context 'without a block and the method call expires' do
-
-        before(:each) do
-          test_class = Class.new do
-            include SlippyMethodHooks
-            def meth
-              sleep 0.2
-            end
-            time_box_method(0.1, :meth)
+      before(:each) do
+        test_class = Class.new do
+          include SlippyMethodHooks
+          def meth
+            sleep 0.2
           end
-
-          @result =
-            begin
-              test_class.new.meth
-            rescue StandardError => e
-              e
-            end
+          time_box_method(0.1, :meth)
         end
 
-        it "throws #{SlippyMethodHooks::TimeoutError} error" do
-          expect(@result).to(be_a(SlippyMethodHooks::TimeoutError))
-        end
+        @result =
+          begin
+            test_class.new.meth
+          rescue StandardError => e
+            e
+          end
       end
 
-      context 'is called with a block and the method call expires' do
+      it "throws #{SlippyMethodHooks::TimeoutError} error" do
+        expect(@result).to(be_a(SlippyMethodHooks::TimeoutError))
+      end
+    end
 
-        before(:each) do
-          expected_result = 'expected-result'
-          @expected_result = expected_result
+    context 'is called with a block and the method call expires' do
 
-          test_class = Class.new do
-            include SlippyMethodHooks
+      before(:each) do
+        expected_result = 'expected-result'
+        @expected_result = expected_result
 
-            attr_reader :args
+        test_class = Class.new do
+          include SlippyMethodHooks
 
-            def meth
-              sleep 0.2
-            end
+          attr_reader :args
 
-            time_box_method(0.1, :meth) do |*args|
-              @args = args
-              expected_result
-            end
+          def meth
+            sleep 0.2
           end
 
-          @test_obj = test_class.new
-          @result =
-            begin
-              @test_obj.meth
-            rescue StandardError => e
-              e
-            end
+          time_box_method(0.1, :meth) do |*args|
+            @args = args
+            expected_result
+          end
         end
 
-        it 'returns the result of the given block' do
-          expect(@expected_result).to eq(@result)
-        end
+        @test_obj = test_class.new
+        @result =
+          begin
+            @test_obj.meth
+          rescue StandardError => e
+            e
+          end
+      end
 
-        it 'yields an array of argument errors' do
-          args = @test_obj.args
-          expect(args).to be_a(Array)
-          expect(args[0]).to eq(SlippyMethodHooks::TimeoutError)
-          expect(args[1]).to be_a(String)
-          expect(args[2]).to be_a(Array)
-        end
+      it 'returns the result of the given block' do
+        expect(@expected_result).to eq(@result)
+      end
+
+      it 'yields an array of argument errors' do
+        args = @test_obj.args
+        expect(args).to be_a(Array)
+        expect(args[0]).to eq(SlippyMethodHooks::TimeoutError)
+        expect(args[1]).to be_a(String)
+        expect(args[2]).to be_a(Array)
       end
     end
   end
