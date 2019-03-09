@@ -22,7 +22,7 @@ module SlippyMethodHooks
             error_args = [TimeoutError, 'execution expired', caller]
             raise(*error_args) unless block_given?
 
-            return instance_exec(*error_args, &blk)
+            instance_exec(*error_args, &blk)
           end
         end
       end
@@ -40,28 +40,28 @@ module SlippyMethodHooks
           begin
             meth.bind(self).call(*args, &block)
           rescue StandardError => e
-            return instance_exec(e, &blk)
+            instance_exec(e, &blk)
           end
         end
       end
     end
 
-    def after(*names)
+    def before(*names, &blk)
       names.each do |name|
         meth = instance_method(name)
         define_method name do |*args, &block|
-          result = meth.bind(self).call(*args, &block)
-          yield result
+          instance_exec(name, *args, block, &blk)
+          meth.bind(self).call(*args, &block)
         end
       end
     end
 
-    def before(*names)
+    def after(*names, &blk)
       names.each do |name|
         meth = instance_method(name)
         define_method name do |*args, &block|
-          yield
-          meth.bind(self).call(*args, &block)
+          result = meth.bind(self).call(*args, &block)
+          instance_exec(result, &blk)
         end
       end
     end
