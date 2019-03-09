@@ -47,6 +47,11 @@ module SlippyMethodHooks
     end
 
     def before(*names, &blk)
+      unless blk
+        raise NoBlockGiven,
+              '.rescue_on_fail must be called with a block',
+              caller
+      end
       names.each do |name|
         meth = instance_method(name)
         define_method name do |*args, &block|
@@ -57,6 +62,11 @@ module SlippyMethodHooks
     end
 
     def after(*names, &blk)
+      unless blk
+        raise NoBlockGiven,
+              '.rescue_on_fail must be called with a block',
+              caller
+      end
       names.each do |name|
         meth = instance_method(name)
         define_method name do |*args, &block|
