@@ -35,8 +35,6 @@ module SlippyMethodHooks
           begin
             meth.bind(self).call(*args, &block)
           rescue StandardError => e
-            raise(e) unless block_given?
-
             yield e
           end
         end
