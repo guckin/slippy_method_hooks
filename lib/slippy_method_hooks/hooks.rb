@@ -1,6 +1,6 @@
 require 'slippy_method_hooks/errors'
+require 'timeout'
 module SlippyMethodHooks
-  require 'timeout'
   def self.included(mod)
     mod.extend(ClassMethods)
   end
@@ -28,14 +28,19 @@ module SlippyMethodHooks
       end
     end
 
-    def rescue_on_fail(*names)
+    def rescue_on_fail(*names, &blk)
+      unless blk
+        raise TimeoutError,
+              '.rescue_on_fail must be called with a block',
+              caller
+      end
       names.each do |name|
         meth = instance_method(name)
         define_method(name) do |*args, &block|
           begin
             meth.bind(self).call(*args, &block)
           rescue StandardError => e
-            yield e
+            return instance_exec(e, &blk)
           end
         end
       end
