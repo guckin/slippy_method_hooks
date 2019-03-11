@@ -82,6 +82,8 @@ my_class.failing_method
 Timeout methods that run forever
 ```ruby
 time_box_method(1, :method_with_long_execution_time)
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` 
