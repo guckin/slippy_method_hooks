@@ -49,7 +49,7 @@ module SlippyMethodHooks
     def before(*names, &blk)
       unless blk
         raise NoBlockGiven,
-              '.rescue_on_fail must be called with a block',
+              '.before must be called with a block',
               caller
       end
       names.each do |name|
@@ -64,7 +64,7 @@ module SlippyMethodHooks
     def after(*names, &blk)
       unless blk
         raise NoBlockGiven,
-              '.rescue_on_fail must be called with a block',
+              '.after must be called with a block',
               caller
       end
       names.each do |name|
